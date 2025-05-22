@@ -7,4 +7,17 @@
 body {
     background-color: white;
     font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #87CEEB; /* Un azul cielo suave */
+}
+
+#escena-bosque {
+    width: 800px;
+    height: 600px;
+    background-color: #f0f9ff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
