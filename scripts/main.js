@@ -15,35 +15,67 @@ document.addEventListener('DOMContentLoaded', () => {
         .attr('y', height - 100)
         .attr('width', width)
         .attr('height', 100)
-        .attr('fill', '#2d5a27'); // Verde oscuro para el suelo
+        .attr('fill', '#1a3a1a'); // Verde más oscuro para el atardecer
     
-    // Función para crear un árbol simple
+    // Función para crear un árbol detallado
     function crearArbol(x, altura) {
-        // Tronco
-        svg.append('rect')
-            .attr('x', x - 10)
-            .attr('y', height - altura - 100)
-            .attr('width', 20)
-            .attr('height', altura - 60)
-            .attr('fill', '#8B4513'); // Marrón
+        const troncoGroup = svg.append('g');
         
-        // Copa del árbol (triángulo)
-        svg.append('path')
-            .attr('d', d3.symbol().type(d3.symbolTriangle).size(5000))
-            .attr('fill', '#228B22') // Verde forestall
-            .attr('transform', `translate(${x}, ${height - altura - 80}) scale(2,-2)`);
+        // Tronco principal
+        troncoGroup.append('rect')
+            .attr('x', x - 12)
+            .attr('y', height - 100 - altura)
+            .attr('width', 24)
+            .attr('height', altura)
+            .attr('fill', '#6B4423'); // Marrón más oscuro para el atardecer
+        
+        // Detalles del tronco (textura)
+        for (let i = 0; i < 4; i++) {
+            troncoGroup.append('rect')
+                .attr('x', x - 10 + i * 6)
+                .attr('y', height - 100 - altura)
+                .attr('width', 3)
+                .attr('height', altura)
+                .attr('fill', '#5C3A21')
+                .attr('opacity', 0.7);
+        }
+        
+        // Raíces visibles
+        troncoGroup.append('path')
+            .attr('d', `M ${x-12} ${height-100} 
+                       Q ${x-20} ${height-95} ${x-24} ${height-100}`)
+            .attr('stroke', '#6B4423')
+            .attr('stroke-width', 4)
+            .attr('fill', 'none');
+            
+        troncoGroup.append('path')
+            .attr('d', `M ${x+12} ${height-100} 
+                       Q ${x+20} ${height-95} ${x+24} ${height-100}`)
+            .attr('stroke', '#6B4423')
+            .attr('stroke-width', 4)
+            .attr('fill', 'none');
+        
+        // Copa del árbol (un solo triángulo mediano)
+        const triangleHeight = 120; // Altura proporcional al tronco
+        const triangleWidth = 80; // Ancho proporcional
+        
+        // Crear un triángulo personalizado
+        const trianglePath = `
+            M ${x} ${height - altura - triangleHeight}
+            L ${x - triangleWidth/2} ${height - altura - 15}
+            L ${x + triangleWidth/2} ${height - altura - 15}
+            Z
+        `;
         
         svg.append('path')
-            .attr('d', d3.symbol().type(d3.symbolTriangle).size(4000))
-            .attr('fill', '#228B22')
-            .attr('transform', `translate(${x}, ${height - altura - 120}) scale(1.8,-1.8)`);
+            .attr('d', trianglePath)
+            .attr('fill', '#1B4B1B'); // Verde más oscuro para el atardecer
     }
     
-    // Crear varios árboles
-    const numArboles = 8;
-    for(let i = 0; i < numArboles; i++) {
-        const x = 100 + (width - 200) * (i / (numArboles - 1));
-        const altura = 120 + Math.random() * 60;
+    // Crear exactamente 3 árboles
+    const posicionesX = [200, 400, 600];
+    posicionesX.forEach(x => {
+        const altura = 120; // Altura mediana para los árboles
         crearArbol(x, altura);
-    }
+    });
 });
